@@ -19,7 +19,6 @@ NUMonomer is an accurate and efficient end-to-end deep-learning framework for pr
 - [Prediction selection and confidence](#prediction-selection-and-confidence)
 - [Long-sequence inference](#long-sequence-inference)
 - [Reproducibility](#reproducibility)
-- [Troubleshooting](#troubleshooting)
 - [Citation](#citation)
 - [License](#license)
 - [Contact](#contact)
@@ -55,7 +54,7 @@ pip install biopython numpy ml-collections
 Clone the repository and enter the project directory:
 
 ```bash
-git clone <YOUR_REPOSITORY_URL>
+git clone https://github.com/yunda-si/NUMonomer.git
 cd NUMonomer
 ```
 
@@ -71,7 +70,7 @@ Possible acceleration options include:
 - DS4Sci EvoformerAttention from DeepSpeed;
 - PyTorch model compilation.
 
-After installing the required optional dependencies, the corresponding settings can be enabled in the configuration, for example:
+After installing the required optional dependencies, the corresponding settings can be enabled in the config.py, for example:
 
 ```python
 config.inference.use_dsattn = True
@@ -106,9 +105,6 @@ NUMonomer/
 ├── structure_module.py
 ├── __init__.py
 │
-├── assets/
-│   └── NUMonomer_overview.png
-│
 ├── example/
 │   ├── test.fasta
 │   └── test.pdb
@@ -122,6 +118,7 @@ NUMonomer/
 │   ├── rigid_utils.py
 │   ├── save_struc.py
 │   ├── seq_utils.py
+│   ├── NUMonomer_overview.png
 │   └── __init__.py
 │
 └── weights/
@@ -162,7 +159,6 @@ GGGAGACCGGAAUUCUGGUCCGAGUAGAGUGUGAGCUCCGUAACUAGUCGCGU
 GGGAGACCGGAATTCTGGTCCGAGTAGAGTGTGAGCTCCGTAACTAGTCGCGT
 ```
 
-Remove all spaces from the sequence before running inference. RNA sequences should use `U`, whereas DNA sequences should use `T`.
 
 ## Quick start
 
@@ -326,56 +322,6 @@ python -u prediction.py \
 
 Exact reproducibility can still depend on the PyTorch and CUDA versions, GPU hardware, compiler settings, and nondeterministic kernels.
 
-## Troubleshooting
-
-### No valid input files are detected
-
-Check that:
-
-- exactly one of `--seq_file` and `--seq_path` is provided;
-- the input path exists;
-- each FASTA header follows `>CHAIN_ID|rna` or `>CHAIN_ID|dna`;
-- RNA sequences use `U` and DNA sequences use `T`;
-- the sequence contains no spaces or unsupported characters.
-
-### CUDA out-of-memory error
-
-Try one or more of the following:
-
-```bash
---split_seq 128 --split_atom 2 --last
-```
-
-You can also reduce `--num_iter` or `--clamp_plddt`, subject to the implementation notes above.
-
-### The requested output format and filename extension differ
-
-The current `prediction.py` constructs the prediction filename with a `.cif` suffix before calling the structure writer. When using `--ftype pdb`, update the filename construction so that the suffix matches the selected format.
-
-For example:
-
-```python
-suffix = "pdb" if cfg.ftype == "pdb" else "cif"
-save_file = os.path.join(
-    entry_path,
-    f"pred_{weight_name}_{seed}.{suffix}",
-)
-```
-
-### PyTorch autocast reports an invalid device type
-
-Some PyTorch versions require `torch.autocast` to receive `cuda` rather than `cuda:0` as its `device_type`. Keep the model device as `cuda:0`, but derive the autocast device type separately when necessary:
-
-```python
-autocast_device = torch.device(device).type
-with torch.autocast(
-    device_type=autocast_device,
-    dtype=torch.bfloat16,
-    enabled=True,
-):
-    preds = model(total_feature, last_only=cfg.save_last)
-```
-
 ## Citation
 
 The complete citation and BibTeX entry will be added after the manuscript becomes publicly available.
@@ -398,4 +344,4 @@ See [LICENSE](LICENSE) for licensing information.
 
 For bug reports, feature requests, and usage questions, please open a GitHub issue.
 
-For direct correspondence, contact [yunda_si@ucas.edu.cn](mailto:yunda_si@ucas.edu.cn).
+For direct correspondence, contact [yunda_si@ucas.edu.cn](mailto:yunda_si@ucas.edu.cn) or [lnchen@sjtu.edu.cn](mailto:lnchen@sjtu.edu.cn).
