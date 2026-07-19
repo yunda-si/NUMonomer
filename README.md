@@ -23,7 +23,6 @@ NUMonomer is an accurate, efficient, and scalable end-to-end deep-learning frame
 - [Long-sequence inference](#long-sequence-inference)
 - [Reproducibility](#reproducibility)
 - [Citation](#citation)
-- [Contact](#contact)
 
 ## Installation
 
@@ -318,9 +317,4 @@ The complete citation and BibTeX entry will be added after the manuscript become
 }
 ```
 
-
-## Contact
-
-For bug reports, feature requests, and usage questions, please open a GitHub issue.
-
-For direct correspondence, contact [yunda_si@ucas.edu.cn](mailto:yunda_si@ucas.edu.cn) or [lnchen@sjtu.edu.cn](mailto:lnchen@sjtu.edu.cn).
+If you have any questions or feedback, please open a GitHub issue or feel free to contact us at [yunda_si@ucas.edu.cn](mailto:yunda_si@ucas.edu.cn) or [lnchen@sjtu.edu.cn](mailto:lnchen@sjtu.edu.cn).
