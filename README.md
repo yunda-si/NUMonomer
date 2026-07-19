@@ -4,13 +4,16 @@
   <img src="utils/NUMonomer_overview.jpg" alt="Overview of the NUMonomer framework" width="900">
 </p>
 
-NUMonomer is an accurate and efficient end-to-end deep-learning framework for predicting the three-dimensional structures of **RNA** and **single-stranded DNA (ssDNA)** directly from their primary sequences. Its ability to operate without relying on auxiliary features, combined with its highly computationally efficient architecture, enables NUMonomer to predict the structure of a 5,000-base-pair nucleic acid within 20 seconds on a single H100-PCIe GPU. This package provides an implementation of the inference pipeline of NUMonomer.
+<p align="center">
+  <em>Overview of the NUMonomer framework.</em>
+</p>
+
+NUMonomer is an accurate, efficient, and scalable end-to-end deep-learning framework for predicting the three-dimensional structures of **RNA** and **single-stranded DNA (ssDNA)** directly from their primary sequences. By eliminating the need for auxiliary inputs and employing a highly scalable architecture, NUMonomer can predict the structure of a 5,000-nucleotide nucleic acid sequence in approximately 20 seconds on a single NVIDIA H100 PCIe GPU. This efficiency makes it well suited for both long-sequence modeling and large-scale structure prediction. This repository provides the official implementation of the NUMonomer inference pipeline.
 
 ## Contents
 
 - [Installation](#installation)
 - [Optional acceleration](#optional-acceleration)
-- [Pretrained weights](#pretrained-weights)
 - [Repository structure](#repository-structure)
 - [Input format](#input-format)
 - [Quick start](#quick-start)
@@ -20,14 +23,27 @@ NUMonomer is an accurate and efficient end-to-end deep-learning framework for pr
 - [Long-sequence inference](#long-sequence-inference)
 - [Reproducibility](#reproducibility)
 - [Citation](#citation)
-- [License](#license)
 - [Contact](#contact)
 
 ## Installation
 
-### Tested environment
+### 1. Create a Conda environment
 
-The inference pipeline has been tested with the following package versions:
+```bash
+conda create -n numonomer python=3.12 -y
+conda activate numonomer
+```
+
+### 2. Install dependencies
+
+Install a PyTorch build compatible with your CUDA driver, and then install the remaining dependencies:
+
+```bash
+pip install torch
+pip install biopython numpy ml-collections
+```
+
+An example tested software environment is:
 
 - Python 3.12
 - PyTorch 2.11
@@ -35,30 +51,24 @@ The inference pipeline has been tested with the following package versions:
 - NumPy 2.4.3
 - ml-collections 1.1.0
 
-### Create an environment
+> GPU inference is strongly recommended. The inference script defaults to `cuda:0` and uses `bfloat16` mixed precision. CPU inference may be substantially slower and may require code changes depending on the supported PyTorch operations.
 
-Using Conda is recommended:
-
-```bash
-conda create -n numonomer python=3.12 -y
-conda activate numonomer
-```
-
-Install PyTorch using a build compatible with your CUDA driver, and then install the remaining dependencies:
-
-```bash
-pip install torch
-pip install biopython numpy ml-collections
-```
-
-Clone the repository and enter the project directory:
+### 3. Clone the repository
 
 ```bash
 git clone https://github.com/yunda-si/NUMonomer.git
 cd NUMonomer
 ```
 
-> **Note:** GPU inference is strongly recommended. The current inference script defaults to `cuda:0` and uses mixed-precision computation with `bfloat16`. CPU inference may be substantially slower and can depend on hardware and PyTorch support for the selected operations.
+### 4. Download model weights
+
+Download the pretrained NUMonomer model weights from Google Drive: [Download NUMonomer weights](https://drive.google.com/drive/folders/1K9fG3ndV2UH3atwyrxHDqPN-oHyvhRwG?usp=sharing)
+
+Place the downloaded checkpoint in the `weights/` directory, for example:
+
+```text
+weights/NUMonomer.pt
+```
 
 ## Optional acceleration
 
@@ -76,21 +86,6 @@ After installing the required optional dependencies, the corresponding settings 
 config.inference.use_dsattn = True
 config.inference.disable_compile = False
 ```
-
-The exact installation procedure depends on the CUDA toolkit, compiler, GPU architecture, and PyTorch version. Verify compatibility before enabling these options.
-
-## Pretrained weights
-
-Download the pretrained NUMonomer model weights from Google Drive:
-
-[Download NUMonomer weights](https://drive.google.com/drive/folders/1K9fG3ndV2UH3atwyrxHDqPN-oHyvhRwG?usp=sharing)
-
-Place the downloaded checkpoint in the `weights/` directory, for example:
-
-```text
-weights/NUMonomer.pt
-```
-
 ## Repository structure
 
 ```text
@@ -191,19 +186,19 @@ The script validates the supplied input files before constructing the inference 
 
 | Argument | Default | Required | Description |
 |---|---:|:---:|---|
-| `--seq_file`, `-seq_file` | `None` | No* | Path to one input sequence file. Mutually exclusive with `--seq_path`. |
-| `--seq_path`, `-seq_path` | `None` | No* | Directory containing input sequence files. Mutually exclusive with `--seq_file`. |
-| `--save_path`, `-save_path` | `None` | Yes | Directory in which target-specific output folders are created. |
-| `--weight`, `-weight` | `None` | Yes | Path to the pretrained model checkpoint. |
-| `--ftype`, `-ftype` | `cif` | Yes | Requested structure serialization format: `cif` or `pdb`. |
-| `--device`, `-device` | `cuda:0` | No | PyTorch device used for inference. |
-| `--seed`, `-seed` | `42` | No | Random seed for Python, NumPy, and PyTorch. |
-| `--last`, `-last` | disabled | No | Export the final recycling iteration instead of the confidence-selected iteration. |
-| `--ncpu`, `-ncpu` | `8` | No | Number of CPU threads and post-processing workers. |
-| `--split_seq`, `-split_seq` | `0` | No | Enable sequence-dimension chunking to reduce peak memory usage. `0` disables chunking. |
-| `--split_atom`, `-split_atom` | `0` | No | Enable atom-dimension chunking to reduce peak memory usage. `0` disables chunking. |
-| `--num_iter`, `-num_iter` | `8` | No | Number of structure-recycling iterations. |
-| `--clamp_plddt`, `-clamp_plddt` | `512` | No | Number of leading residues used for the confidence calculation. |
+| `-seq_file` | `None` | No* | Path to one input sequence file. Mutually exclusive with `--seq_path`. |
+| `-seq_path` | `None` | No* | Directory containing input sequence files. Mutually exclusive with `--seq_file`. |
+| `-save_path` | `None` | Yes | Directory in which target-specific output folders are created. |
+| `-weight` | `None` | Yes | Path to the pretrained model checkpoint. |
+| `-ftype` | `cif` | Yes | Requested structure serialization format: `cif` or `pdb`. |
+| `-device` | `cuda:0` | No | PyTorch device used for inference. |
+| `-seed` | `42` | No | Random seed for Python, NumPy, and PyTorch. |
+| `-last` | disabled | No | Export the final recycling iteration instead of the confidence-selected iteration. |
+| `-ncpu` | `8` | No | Number of CPU threads and post-processing workers. |
+| `-split_seq` | `0` | No | Enable sequence-dimension chunking to reduce peak memory usage. `0` disables chunking. |
+| `-split_atom` | `0` | No | Enable atom-dimension chunking to reduce peak memory usage. `0` disables chunking. |
+| `-num_iter` | `8` | No | Number of structure-recycling iterations. |
+| `-clamp_plddt` | `512` | No | Number of leading residues used for the confidence calculation. |
 
 \* Supply either `--seq_file` or `--seq_path`, but not both.
 
@@ -232,15 +227,13 @@ The JSON log contains fields similar to:
 
 ```json
 {
-  "timming": " 12.34",
+  "timing": " 12.34",
   "plddt": [" 72.1", " 74.8", " 77.3", " 78.0"],
   "len_seq": "   256",
   "target": "example_target",
   "idx_coords": [3]
 }
 ```
-
-In the current script, the key is written as `timming`; this spelling is retained here to match the implementation.
 
 ## Prediction selection and confidence
 
@@ -308,17 +301,6 @@ The `--seed` option initializes random-number generators for:
 - PyTorch CPU operations; and
 - PyTorch CUDA operations.
 
-Example:
-
-```bash
-python -u prediction.py \
-  --seq_file ./example/test.fasta \
-  --save_path ./results_seed_2026 \
-  --weight ./weights/NUMonomer.pt \
-  --ftype cif \
-  --device cuda:0 \
-  --seed 2026
-```
 
 Exact reproducibility can still depend on the PyTorch and CUDA versions, GPU hardware, compiler settings, and nondeterministic kernels.
 
@@ -336,9 +318,6 @@ The complete citation and BibTeX entry will be added after the manuscript become
 }
 ```
 
-## License
-
-See [LICENSE](LICENSE) for licensing information.
 
 ## Contact
 
