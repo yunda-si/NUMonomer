@@ -93,7 +93,7 @@ def predicted(cfg, device, dataloader):
                                 cfg.ftype)
             pending.append(f)
             
-        log_dict['timming'] = f'{t2-t1:6.2f}'
+        log_dict['timing'] = f'{t2-t1:6.2f}'
         log_dict['plddt'] = [f'{i.item():6.1f}' for i in torch.mean(pred_lddts, dim=[1, 2, 3, 4])]
         log_dict['len_seq'] = f"{len(total_feature['label_seq'].squeeze()):6d}"
         log_dict['target'] = total_feature['target_name']
