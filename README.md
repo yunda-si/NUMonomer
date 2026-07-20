@@ -163,8 +163,6 @@ python -u prediction.py \
   --seq_file ./example/test.fasta \
   --save_path ./results \
   --weight ./weights/NUMonomer.pt \
-  --ftype cif \
-  --device cuda:0
 ```
 
 ### Predict all targets in a directory
@@ -173,10 +171,7 @@ python -u prediction.py \
 python -u prediction.py \
   --seq_path ./example \
   --save_path ./results \
-  --weight ./weights/NUMonomer.pt \
-  --ftype cif \
-  --device cuda:0 \
-  --ncpu 8
+  --weight ./weights/NUMonomer.pt
 ```
 
 The script validates the supplied input files before constructing the inference dataset.
@@ -189,7 +184,7 @@ The script validates the supplied input files before constructing the inference 
 | `-seq_path` | `None` | No* | Directory containing input sequence files. Mutually exclusive with `--seq_file`. |
 | `-save_path` | `None` | Yes | Directory in which target-specific output folders are created. |
 | `-weight` | `None` | Yes | Path to the pretrained model checkpoint. |
-| `-ftype` | `cif` | Yes | Requested structure serialization format: `cif` or `pdb`. |
+| `-ftype` | `cif` | No | Requested structure serialization format: `cif` or `pdb`. |
 | `-device` | `cuda:0` | No | PyTorch device used for inference. |
 | `-seed` | `42` | No | Random seed for Python, NumPy, and PyTorch. |
 | `-last` | disabled | No | Export the final recycling iteration instead of the confidence-selected iteration. |
@@ -245,8 +240,6 @@ python -u prediction.py \
   --seq_file ./example/test.fasta \
   --save_path ./results \
   --weight ./weights/NUMonomer.pt \
-  --ftype cif \
-  --device cuda:0 \
   --last
 ```
 
@@ -274,8 +267,6 @@ python -u prediction.py \
   --seq_file ./example/long_target.fasta \
   --save_path ./results_long \
   --weight ./weights/NUMonomer.pt \
-  --ftype cif \
-  --device cuda:0 \
   --split_seq 128 \
   --split_atom 2 \
   --num_iter 8 \
