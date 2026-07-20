@@ -129,15 +129,15 @@ if __name__ == '__main__':
                         type=str,
                         help='path to model weights',
                         required=True)
-    parser.add_argument('-ftype', '--file_type',
-                        default='cif',
-                        type=str,
-                        help='pdb or cif',
-                        required=True)
     parser.add_argument('-device', '--device',
                         default='cuda:0',
                         type=str,
                         help='device to run the model',
+                        required=False)
+    parser.add_argument('-ftype', '--file_type',
+                        default='cif',
+                        type=str,
+                        help='pdb or cif',
                         required=False)
     parser.add_argument('-seed', '--random_seed',
                         default=42,
