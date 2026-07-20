@@ -75,8 +75,8 @@ The confidence module uses native attention computation by default. When support
 
 Possible acceleration options include:
 
-- FlashAttention;
-- DS4Sci EvoformerAttention from DeepSpeed;
+- [FlashAttention](https://github.com/dao-ailab/flash-attention);
+- [DS4Sci EvoformerAttention from DeepSpeed](https://www.deepspeed.ai/tutorials/ds4sci_evoformerattention/);
 - PyTorch model compilation.
 
 After installing the required optional dependencies, the corresponding settings can be enabled in the config.py, for example:
