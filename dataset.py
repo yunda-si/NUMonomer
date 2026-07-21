@@ -66,12 +66,10 @@ class MonomerDataset(Dataset):
 
         return monomer_feature
 
-
     def buildpeptide(self, seq_length):
 
-        pep_coords = torch.rand(seq_length, self.atom_type_num, 3)
+        pep_coords = torch.rand(seq_length, self.atom_type_num, 3).float()
         pep_coords -= torch.mean(pep_coords[:,:3,:], dim=(0,1))
-        pep_coords = torch.tensor(pep_coords).float()
 
         return pep_coords
 
