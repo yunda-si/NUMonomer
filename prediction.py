@@ -63,7 +63,7 @@ def predicted(cfg, device, dataloader):
 
         torch.cuda.empty_cache()
         t1 = time.time()
-        with torch.autocast(device_type=device, dtype=torch.bfloat16, enabled=True):
+        with torch.autocast(device_type=device, dtype=torch.bfloat16, enabled=torch.amp.autocast_mode.is_autocast_available(device)):
             preds = model(total_feature,last_only=cfg.save_last)
         t2 = time.time()
 
@@ -73,7 +73,7 @@ def predicted(cfg, device, dataloader):
 
         pred_coords = preds['pred_coords'].cpu()
         pred_lddts = torch.repeat_interleave(compute_plddt(preds['pred_plddts']).unsqueeze(-1), 28,-1).cpu()
-        idx_maxplddt = max(torch.argmax(torch.mean(pred_lddts, dim=[1, 2, 3, 4])).item(), 3)
+        idx_maxplddt = torch.argmax(torch.mean(pred_lddts, dim=[1, 2, 3, 4])).item()
         if cfg.save_last:
             idx_coords = [len(pred_coords)-1]
         else:
