@@ -150,7 +150,6 @@ class IPA(nn.Module):
                 o3.append(temp)
             o3 = torch.concat(o3, dim=2).flatten(-3, -1)  
                 
-                
         else:
             pair_bias = torch.embedding(pair_params, idx_mat.int()).unsqueeze(0).unflatten(-1, (self.nhead, 1)).permute([0,3,4,1,2])
             o3 = comp_ipa(q, k, self.scale_q, qp, vp, kp, coords, basis, pair_bias, head_weights).flatten(-3, -1)  
