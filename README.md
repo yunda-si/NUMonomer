@@ -300,11 +300,11 @@ The complete citation and BibTeX entry will be added after the manuscript become
 
 ```bibtex
 @article{NUMonomer2026,
-  title   = {NUMonomer enables accurate and efficient nucleic acid structure prediction from primary sequence alone},
-  author  = {To be updated},
-  journal = {To be updated},
-  year    = {2026},
-  doi     = {To be updated}
+  title={NUMonomer enables accurate and scalable nucleic acid structure prediction from primary sequence alone},
+  author={Si, Yunda and Zhang, Suqi and Chen, Luonan},
+  journal={bioRxiv},
+  year={2026},
+  doi={10.64898/2026.07.20.739453}
 }
 ```
 
