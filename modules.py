@@ -28,7 +28,6 @@ class Attn(nn.Module):
                  is_causal=False,
                  tied_attn=False
                  ):
-
         super(Attn, self).__init__()
 
 
@@ -470,7 +469,7 @@ class Evoformer(nn.Module):
 class InputEmbedder(nn.Module):
     def __init__(self,
                  pair_channel,
-                 nums_aa=5,
+                 nums_aa=6,
                  atom_channel=256,
                  nums_posclass=65,
                  ):
