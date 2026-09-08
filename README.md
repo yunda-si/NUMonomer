@@ -113,19 +113,19 @@ python -u prediction.py \
 
 | Argument | Default | Required | Description                                                                           |
 |---|---:|:---:|---------------------------------------------------------------------------------------|
-| `--seq_file`, `-seq_file` | `None` | No* | Path to one input sequence file. Mutually exclusive with `--seq_path`.                |
-| `--seq_path`, `-seq_path` | `None` | No* | Directory containing input sequence files.       |
-| `--save_path`, `-save_path` | `None` | Yes | Directory in which target-specific output folders are created.                        |
-| `--weight`, `-weight` | `None` | Yes | Path to the pretrained model checkpoint.                                              |
-| `--ftype`, `-ftype` | `cif` | Yes | structure format: `cif` or `pdb`.                                                     |
-| `--device`, `-device` | `cuda:0` | No | Device used for inference.                                                            |
-| `--seed`, `-seed` | `42` | No | Random seed for Python, NumPy, and PyTorch.                                           |
-| `--last`, `-last` | disabled | No | Export the final recycling iteration instead of the confidence-selected iteration.    |
-| `--ncpu`, `-ncpu` | `8` | No | Number of CPU threads.                                    |
-| `--split_seq`, `-split_seq` | `0` | No | Enable sequence-dimension chunking to reduce peak memory usage. `0` disables chunking. |
-| `--split_atom`, `-split_atom` | `0` | No | Enable atom-dimension chunking to reduce peak memory usage. `0` disables chunking.    |
-| `--num_iter`, `-num_iter` | `8` | No | Number of structure-recycling iterations.                                             |
-| `--clamp_plddt`, `-clamp_plddt` | `512` | No | Number of leading residues used for the confidence calculation.                       |
+| `--seq_file` | `None` | No* | Path to one input sequence file. Mutually exclusive with `--seq_path`.                |
+| `--seq_path` | `None` | No* | Directory containing input sequence files.       |
+| `--save_path` | `None` | Yes | Directory in which target-specific output folders are created.                        |
+| `--weight` | `None` | Yes | Path to the pretrained model checkpoint.                                              |
+| `--ftype` | `cif` | Yes | structure format: `cif` or `pdb`.                                                     |
+| `--device` | `cuda:0` | No | Device used for inference.                                                            |
+| `--seed` | `42` | No | Random seed for Python, NumPy, and PyTorch.                                           |
+| `--last` | disabled | No | Export the final recycling iteration instead of the confidence-selected iteration.    |
+| `--ncpu` | `8` | No | Number of CPU threads.                                    |
+| `--split_seq` | `0` | No | Enable sequence-dimension chunking to reduce peak memory usage. `0` disables chunking. |
+| `--split_atom` | `0` | No | Enable atom-dimension chunking to reduce peak memory usage. `0` disables chunking.    |
+| `--num_iter` | `8` | No | Number of structure-recycling iterations.                                             |
+| `--clamp_plddt` | `512` | No | Number of leading residues used for the confidence calculation.                       |
 
 
 ## Prediction selection and confidence
