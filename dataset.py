@@ -39,6 +39,7 @@ class MonomerDataset(Dataset):
                            'atom_coords':None,
                            'label_seq':None,
                            'chain_list':None,
+                           'typo':None,
                            'num_structure_recycle':self.num_structure_recycle,
                            'clamp_plddt':self.clamp_plddt
                            }
@@ -46,8 +47,8 @@ class MonomerDataset(Dataset):
         # seq
         record = [i for i in SeqIO.parse(seq_file, 'fasta')][0]
         chain_seq = str(record.seq).strip()
-        header = str(record.name)
-        chain_id, mol_type = header.strip().split('|')
+        header = str(record.name.strip())
+        chain_id, mol_type, typo = header.strip().split('|')
 
         seq_np = [resc.restype1_order[i] for i in chain_seq]
         seq_length = len(chain_seq)
@@ -55,6 +56,7 @@ class MonomerDataset(Dataset):
 
         monomer_feature['sel_idx'] = sel_idx
         monomer_feature['mol_type'] = mol_type
+        monomer_feature['typo'] = typo
         monomer_feature['label_seq'] = torch.from_numpy(np.array(seq_np)).long().unsqueeze(0)
         monomer_feature['chain_list'] = chain_id
         

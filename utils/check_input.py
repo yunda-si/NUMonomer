@@ -18,7 +18,7 @@ def check_input(file_list):
             try:
                 chain_seq = str(record.seq).strip()
                 header = str(record.name).strip()
-                chain_id, mol_type = header.split('|')
+                chain_id, mol_type, topo = header.split('|')
                 chains_list.append(chain_id)
             except:
                 print(f'{seq_file} parse error')
@@ -27,6 +27,10 @@ def check_input(file_list):
             
             if mol_type not in ['dna', 'rna']:
                 print(f'{seq_file} mol_type error')
+                have_error = True
+
+            if topo not in ['linear', 'circular']:
+                print(f'{seq_file} topo error')
                 have_error = True
             
             if not set(chain_seq).issubset(set('AUCGTX')):

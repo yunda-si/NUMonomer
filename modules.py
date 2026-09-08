@@ -8,6 +8,7 @@ from torch import nn
 import torch.nn.functional as F
 from collections import OrderedDict
 from config import get_cfg
+import numpy as np
 cfg = get_cfg()
 
 
@@ -469,7 +470,7 @@ class Evoformer(nn.Module):
 class InputEmbedder(nn.Module):
     def __init__(self,
                  pair_channel,
-                 nums_aa=6,
+                 nums_aa=5,
                  atom_channel=256,
                  nums_posclass=65,
                  ):
@@ -480,9 +481,12 @@ class InputEmbedder(nn.Module):
 
     def forward(self, monomer):
 
-        idx = self.relpos(monomer['sel_idx']).to(monomer['na_coords'].device)
         seq_init = self.embed_seq(monomer['label_seq']).unsqueeze(1)
-
+        if monomer['typo'] == 'linear':
+            idx = self.relpos(monomer['sel_idx']).to(monomer['na_coords'].device)
+        else:
+            idx = self.cyclic_offset(monomer['sel_idx']).to(monomer['na_coords'].device)
+            
         return idx, self.embd_pos.weight, seq_init
 
     def relpos(self, idx, min_dis=-32, max_dis=32):
@@ -492,6 +496,18 @@ class InputEmbedder(nn.Module):
 
         return idx
 
+    def cyclic_offset(self, idx, min_dis=-32, max_dis=32):
+        L = len(idx)
+        i = np.arange(L)
+        ij = np.stack([i,i+L],-1)
+        offset = i[None,:] - i[:,None]
+        c_offset = np.abs(ij[:,None,:,None] - ij[None,:,None,:]).min((2,3))
+        a = c_offset < np.abs(offset)
+        c_offset[a] = -c_offset[a]
+        idx = c_offset * np.sign(offset)
+        idx = torch.clamp(torch.from_numpy(idx), min_dis, max_dis).long() - min_dis
+        
+        return idx
 
 class MSAEncoder(nn.Module):
 
