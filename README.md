@@ -25,7 +25,7 @@ conda activate numonomer
 pip install torch
 pip install biopython numpy ml-collections
 ```
-Tested versions::
+Tested versions:
 
 - Python 3.12
 - PyTorch 2.11
