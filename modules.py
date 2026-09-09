@@ -496,6 +496,7 @@ class InputEmbedder(nn.Module):
 
         return idx
 
+    #https://github.com/sokrypton/ColabDesign/blob/main/af/examples/af_cyc_design.ipynb
     def cyclic_offset(self, idx, min_dis=-32, max_dis=32):
         L = len(idx)
         i = np.arange(L)
