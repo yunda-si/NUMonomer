@@ -7,7 +7,7 @@
 NUMonomer is an end-to-end deep-learning framework for predicting the three-dimensional structures of **RNA** and **single-stranded DNA (ssDNA)** directly from their primary sequences. Its ability to operate without relying on auxiliary features, combined with its highly computationally efficient architecture, enables NUMonomer to predict the structure of a 5,000-base-pair nucleic acid within 20 seconds on a single H100-PCIe GPU. This package provides an implementation of the inference pipeline of NUMonomer.
 
 ## Update:
-Updated to support circular RNA structure prediction using the 
+v1.1.0   Added support for circular RNA structure prediction using the 
 cyclic offset relative positional encoding introduced in [AfCycDesign](https://github.com/sokrypton/ColabDesign/tree/main).
 
 ## Installation
