@@ -182,6 +182,18 @@ python -u prediction.py \
 }
 ```
 
+If you use NUMonomer for circular RNA/DNA structure prediction, please also cite:
+```bibtex
+@article{Rettie2025,
+  title   = {Cyclic peptide structure prediction and design using AlphaFold2},
+  author  = {Rettie, S. A. and Campbell, K. V. and Bera, A. K. and others},
+  journal = {Nature Communications},
+  year    = {2025},
+  volume  = {16},
+  pages   = {4730},
+  doi     = {https://doi.org/10.1038/s41467-025-59940-7}
+}
+```
 
 ## Contact
 
