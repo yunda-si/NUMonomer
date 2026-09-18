@@ -10,10 +10,10 @@ from structure_module import StructureModule
 from utils.seq_utils import seq2atom, localrigids
 from utils.rigid_utils import rot_to_quat
 
-def log_memory():
-    print("   torch.cuda.memory_allocated: %8.4f GB"%(torch.cuda.memory_allocated(0)/1024/1024/1024))
-    print("    torch.cuda.memory_reserved: %8.4f GB"%(torch.cuda.memory_reserved(0)/1024/1024/1024))
-    print("torch.cuda.max_memory_reserved: %8.4f GB"%(torch.cuda.max_memory_reserved(0)/1024/1024/1024))
+def log_memory(device):
+    print("   torch.cuda.memory_allocated: %8.4f GB"%(torch.cuda.memory_allocated(device)/1024/1024/1024))
+    print("    torch.cuda.memory_reserved: %8.4f GB"%(torch.cuda.memory_reserved(device)/1024/1024/1024))
+    print("torch.cuda.max_memory_reserved: %8.4f GB"%(torch.cuda.max_memory_reserved(device)/1024/1024/1024))
     
     
 class NUMonomer(nn.Module):
@@ -106,7 +106,7 @@ class NUMonomer(nn.Module):
         pred_coords = torch.permute(torch.stack(pred_coords), [0, 1, 3, 2, 4])
         pred_plddts = torch.stack(pred_plddts)
 
-        log_memory()
+        log_memory(coords.device)
         
         return {
                 'pred_coords': pred_coords,
