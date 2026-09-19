@@ -80,7 +80,7 @@ def predicted(cfg, device, dataloader):
             idx_coords = [idx_maxplddt]
         
         for idx_coord in idx_coords:
-            save_file = os.path.join(entry_path, f'pred_{weight_name}_{seed}.cif')       
+            save_file = os.path.join(entry_path, f'pred_{weight_name}_{seed}.{cfg.ftype}')       
 
             f = cpu_pool.submit(cpu_analyze_and_store,
                              	pred_coords[idx_coord,0],
